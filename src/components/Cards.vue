@@ -1,34 +1,32 @@
 <script setup>
 
-import {computed, ref} from "vue";
+import {onMounted, ref} from "vue";
 
 let suits = ["spades", "clubs", "diamonds", "hearts"];
 const values = ["6", "7", "8", "9", "10", "J", "Q", "K", "A"];
 
+let deck = ref([]);
 function getDeck() {
-  let deck = [];
+  let new_deck = [];
   for (let i = 0; i < suits.length; i++) {
     for (let j = 0; j < values.length; j++) {
       let card = {Value: values[j], Suit: suits[i]}
-      deck.push(card);
+      new_deck.push(card);
     }
   }
-  return deck;
+  return new_deck;
 }
 
-let deck = ref(getDeck());
-
-function mix() {
-  for (let i = 0; i < 100; i++) {
-    let location1 = Math.floor(Math.random() * deck.value.length);
-    let location2 = Math.floor(Math.random() * deck.value.length);
-    let newLocation;
-    newLocation = deck.value[location1];
-    deck.value[location1] = deck.value[location2];
-    deck.value[location2] = newLocation;
-  }
-  renderDeck();
-}
+// function mix() {
+//   for (let i = 0; i < 100; i++) {
+//     let location1 = Math.floor(Math.random() * deck.value.length);
+//     let location2 = Math.floor(Math.random() * deck.value.length);
+//     let newLocation;
+//     newLocation = deck.value[location1];
+//     deck.value[location1] = deck.value[location2];
+//     deck.value[location2] = newLocation;
+//   }
+// }
 
 function renderDeck() {
   document.getElementById("deck").innerHTML = "";
@@ -39,25 +37,44 @@ function renderDeck() {
     card.className = "card";
     value.className = "value";
     suit.className = "suit " + deck[i].Suit;
-    value.innerHTML = deck[i].Value;
+    value.innerHTML = deck.value[i].Value;
     card.appendChild(value);
     card.appendChild(suit);
     document.getElementById("deck").appendChild(card);
   }
 }
+function shuffleDeck(deck) {
+  for (let i = deck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [deck[i], deck[j]] = [deck[j], deck[i]];
+  }
+}
 
-const cards = computed(() => {
-  return deck.value;
+onMounted(() => {
+  deck.value = getDeck();
 });
 
+function mix() {
+  shuffleDeck(deck.value);
+}
+
+function changeSide(){
+  let card = document.createElement("div");
+  card.className = "back";
+}
 </script>
 <template>
   <div class="deck">
     <h1>A Deck of Cards</h1>
-    <button class="mix" @click="mix()">Mix</button>
-    <div class="card" v-for="card in cards" :key="card.Value">
-      <div class="value">{{ card.Value }}</div>
-      <div :class="'suit ' + card.Suit"></div>
+    <button class="mix" @click="mix">Mix</button>
+<!--    <div class="card" v-for="card in deck" :key="card.Value" v-on:click="changeSide">-->
+<!--      <div class="value">{{ card.Value }}</div>-->
+<!--      <div :class="'suit ' + card.Suit"></div>-->
+<!--    </div>-->
+    <div class="card" v-for="(card, index) in deck" :key="index" @click="changeSide(index)">
+      <div class="value" v-if="!card.flipped">{{ card.Value }}</div>
+      <div :class="'suit ' + card.Suit" v-if="!card.flipped"></div>
+      <div class="back" v-if="card.flipped"></div>
     </div>
   </div>
 </template>
@@ -108,9 +125,10 @@ button {
   font-family: sans-serif;
 }
 
-
+.back{ background-image: url("src/assets/shirt.jpg");
+}
 .card .suit {
-  background-image: url("cards.png");
+  background-image: url("../assets/cards.png");
   height: 100px;
   width: 90px;
 }
