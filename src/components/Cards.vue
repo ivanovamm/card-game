@@ -33,7 +33,6 @@ function renderDeck(deck) {
     card.className = "card";
     value.className = "value";
     suit.className = "suit " + deck[i].Suit;
-
     value.innerHTML = deck[i].Value;
     card.appendChild(value);
     card.appendChild(suit);
