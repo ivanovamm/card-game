@@ -1,4 +1,7 @@
 <script setup>
+
+import {ref} from "vue";
+
 let suits = ["spades", "clubs", "diamonds", "hearts"];
 const values = ["6", "7", "8", "9", "10", "J", "Q", "K", "A"];
 
@@ -13,6 +16,8 @@ function getDeck() {
   return deck;
 }
 
+let deck = ref(getDeck());
+
 function mix(deck) {
   for (let i = 0; i < 100; i++) {
     let location1 = Math.floor(Math.random() * deck.length);
@@ -21,11 +26,11 @@ function mix(deck) {
     deck[location1] = deck[location2];
     deck[location2] = newLocation;
   }
-  return deck;
+  renderDeck(deck);
 }
+
 function renderDeck(deck) {
   document.getElementById("deck").innerHTML = "";
-
   for (let i = 0; i < deck.length; i++) {
     let card = document.createElement("div");
     let value = document.createElement("div");
@@ -39,12 +44,13 @@ function renderDeck(deck) {
     document.getElementById("deck").appendChild(card);
   }
 }
-let deck = getDeck();
+
+
 </script>
 <template>
   <div class="deck">
     <h1>A Deck of Cards</h1>
-    <button class="mix" @click="mix">Mix</button>
+    <button class="mix" @click="mix(deck)">Mix</button>
     <div class="card" v-for="card in deck" :key="card.Value">
       <div class="value">{{ card.Value }}</div>
       <div :class="'suit ' + card.Suit"></div>
@@ -68,22 +74,16 @@ button {
   background-color: skyblue;
 
 }
-.deck .card{  border: solid 1px #aaa
-;
-  border-radius: 9px
-;
-  width: 95px
-;
-  height: 150px
-;
-  float: left
-;
-  background-color: white
-;
-  padding: 3px 3px 3px 3px
-;
-  margin: 5px
-;
+
+.deck .card {
+  border: solid 1px #aaa;
+  border-radius: 9px;
+  width: 95px;
+  height: 150px;
+  float: left;
+  background-color: white;
+  padding: 3px 3px 3px 3px;
+  margin: 5px;
 }
 
 .card {
