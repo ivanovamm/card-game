@@ -1,6 +1,6 @@
 <script setup>
 
-import {ref} from "vue";
+import {computed, ref} from "vue";
 
 let suits = ["spades", "clubs", "diamonds", "hearts"];
 const values = ["6", "7", "8", "9", "10", "J", "Q", "K", "A"];
@@ -18,20 +18,21 @@ function getDeck() {
 
 let deck = ref(getDeck());
 
-function mix(deck) {
+function mix() {
   for (let i = 0; i < 100; i++) {
-    let location1 = Math.floor(Math.random() * deck.length);
-    let location2 = Math.floor(Math.random() * deck.length);
-    let newLocation = deck[location1];
-    deck[location1] = deck[location2];
-    deck[location2] = newLocation;
+    let location1 = Math.floor(Math.random() * deck.value.length);
+    let location2 = Math.floor(Math.random() * deck.value.length);
+    let newLocation;
+    newLocation = deck.value[location1];
+    deck.value[location1] = deck.value[location2];
+    deck.value[location2] = newLocation;
   }
-  renderDeck(deck);
+  renderDeck();
 }
 
-function renderDeck(deck) {
+function renderDeck() {
   document.getElementById("deck").innerHTML = "";
-  for (let i = 0; i < deck.length; i++) {
+  for (let i = 0; i < deck.value.length; i++) {
     let card = document.createElement("div");
     let value = document.createElement("div");
     let suit = document.createElement("div");
@@ -45,13 +46,16 @@ function renderDeck(deck) {
   }
 }
 
+const cards = computed(() => {
+  return deck.value;
+});
 
 </script>
 <template>
   <div class="deck">
     <h1>A Deck of Cards</h1>
-    <button class="mix" @click="mix(deck)">Mix</button>
-    <div class="card" v-for="card in deck" :key="card.Value">
+    <button class="mix" @click="mix()">Mix</button>
+    <div class="card" v-for="card in cards" :key="card.Value">
       <div class="value">{{ card.Value }}</div>
       <div :class="'suit ' + card.Suit"></div>
     </div>
