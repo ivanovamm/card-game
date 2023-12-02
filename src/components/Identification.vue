@@ -8,7 +8,7 @@ defineProps({
 </script>
 
 <template>
-<form action="./server.php" method="get" id="form">
+<form action="server.php" method="get" id="form">
   <div align="right" class="nickname">
     <h1 class="green">{{ msg }}</h1>
     <b>Enter your nickname</b>
