@@ -80,10 +80,10 @@ function collect(){
   <div class="deck">
     <h1>A Deck of Cards</h1>
     <button class="mix" @click="mix">Mix</button>
-    <button class="Collect" @click="collect">Collect</button>
+    <button class="collect" @click="collect">Collect</button>
     <div class="card" v-for="(card, index) in deck" :key="index" @click="changeSide(card)">
-      <div class="value">{{ card.Value }}</div>
-      <div :class="'suit ' + card.Suit"></div>
+      <div class="value" v-if="!card.flipped">{{ card.Value }}</div>
+      <div :class="'suit ' + card.Suit" v-if="!card.flipped"></div>
       <div class="back" v-if="card.flipped"></div>
     </div>
 
@@ -108,10 +108,19 @@ button {
 }
 
 .mix {
+  margin-left: 650px;
   align-items: center;
   background-color: skyblue;
 
 }
+
+.collect {
+  margin-left: 650px;
+  align-items: center;
+  background-color: skyblue;
+  margin-top: 20px;
+}
+
 
 .deck .card {
   border: solid 1px #aaa;
@@ -146,11 +155,10 @@ button {
 
 
 .card .back{
+  background-image: url("../assets/shirt.png");
   height: 100%;
   width: 100%;
-  background-image: url("../assets/shirt.png");
-  //background-position: center;
-  background-size: cover;
+  background-position: center;
 }
 
 .card .suit {
