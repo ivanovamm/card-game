@@ -6,11 +6,12 @@ let suits = ["spades", "clubs", "diamonds", "hearts"];
 const values = ["6", "7", "8", "9", "10", "J", "Q", "K", "A"];
 
 let deck = ref([]);
+let card = ref([])
 function getDeck() {
   let new_deck = [];
   for (let i = 0; i < suits.length; i++) {
     for (let j = 0; j < values.length; j++) {
-      let card = {Value: values[j], Suit: suits[i], flipped: false}
+      card = {Value: values[j], Suit: suits[i], flipped: false}
       new_deck.push(card);
     }
   }
@@ -58,18 +59,20 @@ function mix() {
   shuffleDeck(deck.value);
 }
 
-// function changeSide(card) {
-//   card.flipped = !card.flipped;
-//   card.flipped ? card.class = 'flipped' : card.class = '';
-// }
-
 
 function changeSide(card) {
   card.flipped = !card.flipped;
 }
 
 
-
+function collect(){
+  window.location.reload();
+  document.getElementById("deck").innerHTML = "";
+  card = document.createElement("div");
+  card.className = "card";
+  card.flipped = true;
+  return card;
+}
 
 
 </script>
@@ -77,6 +80,7 @@ function changeSide(card) {
   <div class="deck">
     <h1>A Deck of Cards</h1>
     <button class="mix" @click="mix">Mix</button>
+    <button class="Collect" @click="collect">Collect</button>
     <div class="card" v-for="(card, index) in deck" :key="index" @click="changeSide(card)">
       <div class="value">{{ card.Value }}</div>
       <div :class="'suit ' + card.Suit"></div>
@@ -130,6 +134,8 @@ button {
   font-size: 22px;
   text-align: center;
   margin: 3px;
+  background-size: cover;
+  background-position: center;
 }
 
 .card .value {
