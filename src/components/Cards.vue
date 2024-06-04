@@ -1,6 +1,7 @@
 <script setup>
 
 import {onMounted, ref} from "vue";
+import Game from "@/components/Game.vue";
 
 let suits = ["spades", "clubs", "diamonds", "hearts"];
 const values = ["6", "7", "8", "9", "10", "J", "Q", "K", "A"];
@@ -18,16 +19,6 @@ function getDeck() {
   return new_deck;
 }
 
-// function mix() {
-//   for (let i = 0; i < 100; i++) {
-//     let location1 = Math.floor(Math.random() * deck.value.length);
-//     let location2 = Math.floor(Math.random() * deck.value.length);
-//     let newLocation;
-//     newLocation = deck.value[location1];
-//     deck.value[location1] = deck.value[location2];
-//     deck.value[location2] = newLocation;
-//   }
-// }
 
 function renderDeck() {
   document.getElementById("deck").innerHTML = "";
@@ -65,34 +56,24 @@ function changeSide(card) {
 }
 
 
-function collect(){
+function start(){
   window.location.reload();
-  document.getElementById("deck").innerHTML = "";
-  card = document.createElement("div");
-  card.className = "card";
-  card.flipped = true;
-  return card;
 }
+
 
 
 </script>
 <template>
   <div class="deck">
-    <h1>A Deck of Cards</h1>
-    <button class="mix" @click="mix">Mix</button>
-    <button class="collect" @click="collect">Collect</button>
+<!--    <h1>A Deck of Cards</h1>-->
+    <button
+        class="mix" @click="mix">Mix</button>
+<!--    <button class="start" @click="start">Start the game</button>-->
     <div class="card" v-for="(card, index) in deck" :key="index" @click="changeSide(card)">
       <div class="value" v-if="!card.flipped">{{ card.Value }}</div>
       <div :class="'suit ' + card.Suit" v-if="!card.flipped"></div>
       <div class="back" v-if="card.flipped"></div>
     </div>
-
-
-    <!--    <div class="card" v-for="(card, index) in deck" :key="index" @click="changeSide(card)" :class="{ 'flipped': card.flipped }" :data-index="index">-->
-<!--    <div class="value">{{ card.Value }}</div>-->
-<!--      <div :class="'suit ' + card.Suit" ></div>-->
-<!--      <div class="back" v-if="card.flipped"></div>-->
-<!--    </div>-->
   </div>
 </template>
 <style scoped>
@@ -104,7 +85,6 @@ button {
   border: solid black;
   border-radius: 200px;
   color: black;
-  /*background-image: linear-gradient(45deg, hotpink , skyblue 100%);*/
 }
 
 .mix {
@@ -128,7 +108,7 @@ button {
   width: 95px;
   height: 150px;
   float: left;
-  //background-color: white;
+//background-color: white;
   padding: 3px 3px 3px 3px;
   margin: 5px;
 }
@@ -137,7 +117,7 @@ button {
   width: 50px;
   padding: 10px;
   border: solid 1px #808080;
-  //background-color: white;
+//background-color: white;
   display: inline-block;
   border-radius: 10px;
   font-size: 22px;
