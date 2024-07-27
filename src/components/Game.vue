@@ -60,6 +60,7 @@ function playRound() {
   } else {
     roundWinner.value = "It's a tie!";
   }
+  
 }
 
 onMounted(() => {
@@ -119,6 +120,7 @@ onMounted(() => {
 
 
 <style scoped>
+
 button {
   font-family: Arial, sans-serif;
   font-size: large;

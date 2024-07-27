@@ -20,21 +20,6 @@ function getDeck() {
 }
 
 
-function renderDeck() {
-  document.getElementById("deck").innerHTML = "";
-  for (let i = 0; i < deck.value.length; i++) {
-    let card = document.createElement("div");
-    let value = document.createElement("div");
-    let suit = document.createElement("div");
-    card.className = "card";
-    value.className = "value";
-    suit.className = "suit " + deck[i].Suit;
-    value.innerHTML = deck.value[i].Value;
-    card.appendChild(value);
-    card.appendChild(suit);
-    document.getElementById("deck").appendChild(card);
-  }
-}
 function shuffleDeck(deck) {
   for (let i = deck.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -56,19 +41,12 @@ function changeSide(card) {
 }
 
 
-function start(){
-  window.location.reload();
-}
-
-
 
 </script>
 <template>
   <div class="deck">
-<!--    <h1>A Deck of Cards</h1>-->
     <button
         class="mix" @click="mix">Mix</button>
-<!--    <button class="start" @click="start">Start the game</button>-->
     <div class="card" v-for="(card, index) in deck" :key="index" @click="changeSide(card)">
       <div class="value" v-if="!card.flipped">{{ card.Value }}</div>
       <div :class="'suit ' + card.Suit" v-if="!card.flipped"></div>
